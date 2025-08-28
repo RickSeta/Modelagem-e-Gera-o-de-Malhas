@@ -32,6 +32,10 @@ class Canvas(QtOpenGLWidgets.QOpenGLWidget):
     
     def paintGL(self):
         glClear(GL_COLOR_BUFFER_BIT)
+        glShadeModel(GL_SMOOTH)
+        xA
+        yA
+        zA
 
     
 if __name__ == '__main__':
