@@ -6,36 +6,62 @@ import sys
 from rpn import RPN
 class MyWidget(QWidget, RPN):
     def __init__(self):
-        super(MyWidget,self).__init__()
-        self.pilha = []
-        self.setGeometry(100,100,200,75)
+        super(MyWidget, self).__init__()
+        self.setGeometry(100, 100, 300, 200)
         self.setWindowTitle("RPN Henrique")
+
         self.r1 = QLabel("Termo a ser adicionado")
+        
+        help_button = QToolButton()
+        help_button.setText("?")
+        help_button.setToolTip("Digite o número ou expressão a ser adicionada na pilha.")
+
         self.t1 = QLineEdit()
         self.r2 = QLabel("RPN")
         self.t2 = QLineEdit()
+        self.t2.setReadOnly(True)
+
         self.appendB = QPushButton("Adicionar")
-        self.b1 = QPushButton("Soma")
-        self.b2 = QPushButton("Multiplicacao")
-        self.b3 = QPushButton("Divisao")
-        self.b4 = QPushButton("Subtracao")
-        self.b5 = QPushButton("limpa")
+        self.b1 = QPushButton("+")
+        self.b2 = QPushButton("*")
+        self.b3 = QPushButton("/")
+        self.b4 = QPushButton("-")
+        self.b5 = QPushButton("Limpa")
         self.b6 = QPushButton("<")
         self.exec = QPushButton("Executar")
+
         self.vbox = QVBoxLayout()
-        self.vbox.addWidget(self.r1)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.r1)
+        hbox.addWidget(help_button)
+        hbox.addStretch()
+        self.vbox.addLayout(hbox)
         self.vbox.addWidget(self.t1)
-        self.vbox.addWidget(self.r2)
         self.vbox.addWidget(self.appendB)
+        self.vbox.addWidget(self.r2)
         self.vbox.addWidget(self.t2)
-        
-        self.vbox.addWidget(self.b1)
-        self.vbox.addWidget(self.b2)
-        self.vbox.addWidget(self.b3)
-        self.vbox.addWidget(self.b4)
-        self.vbox.addWidget(self.b5)
-        self.vbox.addWidget(self.b6)
-        self.vbox.addWidget(self.exec)
+
+        hbox1 = QHBoxLayout()
+        hbox1.addWidget(self.b1)
+        hbox1.addWidget(self.b2)
+        self.vbox.addLayout(hbox1)
+
+        hbox2 = QHBoxLayout()
+        hbox2.addWidget(self.b3)
+        hbox2.addWidget(self.b4)
+        self.vbox.addLayout(hbox2)
+
+        hbox3 = QHBoxLayout()
+        hbox3.addWidget(self.b5)
+        hbox3.addWidget(self.b6)
+        self.vbox.addLayout(hbox3)
+
+        hbox4 = QHBoxLayout()
+        hbox4.addStretch()
+        hbox4.addWidget(self.exec)
+        hbox4.addStretch()
+        self.vbox.addLayout(hbox4)
+
         self.setLayout(self.vbox)
 
         self.b1.clicked.connect((lambda x: self.addOp(" + ")))
@@ -64,17 +90,22 @@ class MyWidget(QWidget, RPN):
         
     def parser(self):
         text = self.t1.text()
+        text += (" ")
         temp = ""
-        for x in range(len(text)):
-            isOp = self.checkOp(text[x])
-            if(text[x] == " " or isOp):
+        for x in (text):
+            print(text)
+            print(x)
+            isOp = self.checkOp(x)
+            print(isOp)
+            if(x == " " or isOp):
                 if len(temp) > 0:
+                   print("temp ",temp)
                    self.pilha.append(temp)
                 temp = ""
                 if isOp:
-                    self.pilha.append(text[x])
+                    self.pilha.append(x)
             else:
-                temp += text[x]
+                temp += x
 
     def addPilha(self):
         print(self.t1.text())
